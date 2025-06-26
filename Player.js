@@ -1,5 +1,6 @@
 import Entity from './Entity.js';
 import Input from './Input.js';
+import Boundary from './Boundary.js';
 
 class Player extends Entity{
     constructor(position, spriteAnimation){
@@ -31,6 +32,12 @@ class Player extends Entity{
             this.move(dx, dy);
         }
 
+        // Limitar dentro de los límites del canvas usando Boundary
+        if (!this.boundary) {
+            this.boundary = new Boundary();
+        }
+        const size = this.getComponent && this.getComponent('size') ? this.getComponent('size') : {width:0, height:0};
+        this.boundary.clamp(this.position, size);
     }
     draw(ctx) {
         if (this.spriteAnimation) {

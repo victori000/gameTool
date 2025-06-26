@@ -50,7 +50,7 @@ class Level1 extends Scene {
                 this.dialogActive = true;
             }
         }
-        if (this.dialogActive && Input.isKeyPressed('Escape')) {
+        if (this.dialogActive && Input.isKeyPressed('e')) {
             this.dialogBox.hide();
             this.dialogActive = false;
         }
