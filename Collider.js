@@ -4,6 +4,8 @@ class Collider{
         this.size = size || { width: 0, height: 0 };
     }
     intersects(other) {
+        console.log("Checking intersection between", this, "and", other);
+        
         return (
             this.position.x < other.position.x + other.size.width &&
             this.position.x + this.size.width > other.position.x &&

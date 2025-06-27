@@ -20,7 +20,8 @@ class Level1 extends Scene {
     constructor(images) {
         super('Level1');
         // Entities
-        this.player = new Player(new Position(0, 0), new SpriteAnimation(images.player, frameWidth, frameHeight, frameCount, frameRate));
+        this.playerSpriteAnimation = new SpriteAnimation(images.player, frameWidth, frameHeight, frameCount, frameRate);
+        this.player = new Player(new Position(0, 0), this.playerSpriteAnimation);
         this.npc = new NPC(new Position(100, 100), new SpriteAnimation(images.npc, frameWidth, frameHeight, frameCount, frameRate));
         this.door = new Entity();
         this.doorPosition = new Position(200, 200);
@@ -34,25 +35,20 @@ class Level1 extends Scene {
         this.player.addComponent('size', new Size(frameWidth, frameHeight));
         this.npc.addComponent('size', new Size(frameWidth, frameHeight));
 
+        this.player.addComponent('collider', new Collider(this.player.position, this.player.getComponent('size')));
+        this.npc.addComponent('collider', new Collider(this.npc.position, this.npc.getComponent('size')));
+
+
         // Dialog
         this.dialogBox = new DialogBox();
         this.dialogActive = false;
     }
 
     update(deltaTime) {
-        // Collision with NPC
-        const playerSize = this.player.getComponent('size');
-        const npcSize = this.npc.getComponent('size');
-        const collision = new Collision(this.player.position, playerSize, this.npc.position, npcSize);
-        if (collision.check()) {
-            if (!this.dialogActive && Input.isKeyPressed('e')) {
-                this.dialogBox.show('¡Hola! Soy el NPC.');
-                this.dialogActive = true;
-            }
-        }
-        if (this.dialogActive && Input.isKeyPressed('e')) {
-            this.dialogBox.hide();
-            this.dialogActive = false;
+        
+        if (this.player.getComponent('collider').intersects(this.npc.getComponent('collider'))) {
+            console.log('Player and NPC are colliding');
+            this.playerSpriteAnimation.frameCount = 4;
         }
 
         this.player.update(deltaTime);
