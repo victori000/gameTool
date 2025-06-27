@@ -79,6 +79,7 @@ class MainMenu extends Scene {
             player: 'assets/sprites/pj_especical.png',
             npc: 'assets/sprites/pj_animated.png',
             door: 'assets/sprites/door.png',
+            sword: 'assets/sprites/sword.png'
         };
         loadImages(paths).then(images => {
             const level1 = new Level1(images);
